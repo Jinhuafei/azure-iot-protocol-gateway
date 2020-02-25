@@ -5,19 +5,19 @@ namespace Microsoft.Azure.Devices.ProtocolGateway
 {
     using System.Configuration;
 
-    class ConfigManagerReader : IAppConfigReader
-    {
-        public bool TryGetSetting(string name, out string value)
-        {
-            string[] values = ConfigurationManager.AppSettings.GetValues(name);
-            if (values == null || values.Length == 0)
-            {
-                value = default(string);
-                return false;
-            }
+    //class ConfigManagerReader : IAppConfigReader
+    //{
+    //    public bool TryGetSetting(string name, out string value)
+    //    {
+    //        string[] values = ConfigurationManager.AppSettings.GetValues(name);
+    //        if (values == null || values.Length == 0)
+    //        {
+    //            value = default(string);
+    //            return false;
+    //        }
 
-            value = values[0];
-            return true;
-        }
-    }
+    //        value = values[0];
+    //        return true;
+    //    }
+    //}
 }

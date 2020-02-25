@@ -14,7 +14,7 @@ namespace ProtocolGateway.Tests
         // String containing Hostname, Device Id & Device Key in one of the following formats:
         //  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
         //  "HostName=<iothub_host_name>;CredentialType=SharedAccessSignature;DeviceId=<device_id>;SharedAccessSignature=SharedAccessSignature sr=<iot_host>/devices/<device_id>&sig=<token>&se=<expiry_time>";
-        private const string DeviceConnectionString = "HostName=<iothub_host_name>;DeviceId=<device-id>;GatewayHostName=<gateway_host_name>;SharedAccessKey=<shared_key>";
+        private const string DeviceConnectionString = "GatewayHostName=10.130.70.98;HostName=matt-pnphub-01.azure-devices.net;DeviceId=gatewaytestdevice01;SharedAccessKey=H8nXXBTJaOJZZf77RfDH9iOtCn/CGH2HDAXSqgd6PeY=";
         private static int MESSAGE_COUNT = 5;
 
         static void Main(string[] args)
@@ -30,7 +30,10 @@ namespace ProtocolGateway.Tests
                
                 ITransportSettings[] settings = new MqttTransportSettings[1];
                 settings[0] = mqttSetting;
-                DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString, settings);
+                //DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString, settings);
+                DeviceClient deviceClient = DeviceClient.Create("matt-pnphub-01.azure-devices.net",
+                                                                "mattfei-dev02.redmond.corp.microsoft.com", 
+                                                                new DeviceAuthenticationWithRegistrySymmetricKey("gatewaytestdevice01", "H8nXXBTJaOJZZf77RfDH9iOtCn/CGH2HDAXSqgd6PeY="));
 
                 deviceClient.OpenAsync().Wait();
                 SendEvent(deviceClient).Wait();

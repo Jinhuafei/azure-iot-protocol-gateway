@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net451</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Microsoft.Azure.Devices.ProtocolGateway.Providers.CloudStorage</PackageId>
     <Title>Microsoft Azure IoT protocol gateway framework - Azure Storage persistence providers</Title>
     <Description>This library contains the Azure Storage-based persistence components of Azure IoT protocol gateway that enables protocol translation for Azure IoT Hub.</Description>
@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.18.1" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.2" />
     <PackageReference Include="murmurhash-signed" Version="1.0.2" />
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.1" />

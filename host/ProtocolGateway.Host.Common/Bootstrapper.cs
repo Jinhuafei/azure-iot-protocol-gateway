@@ -26,6 +26,7 @@ namespace ProtocolGateway.Host.Common
     using Microsoft.Azure.Devices.ProtocolGateway.Mqtt;
     using Microsoft.Azure.Devices.ProtocolGateway.Mqtt.Persistence;
     using Message = Microsoft.Azure.Devices.ProtocolGateway.Messaging.Message;
+    using Microsoft.Azure.Devices.ProtocolGateway.Core.ChannelHandlers;
 
     public class Bootstrapper
     {
@@ -156,17 +157,35 @@ namespace ProtocolGateway.Host.Common
                 .Handler(acceptLimiter)
                 .ChildHandler(new ActionChannelInitializer<ISocketChannel>(channel =>
                 {
-                    channel.Pipeline.AddLast(
+                    if(this.tlsCertificate != null)
+                    {
+                        channel.Pipeline.AddLast(
                         TlsHandler.Server(this.tlsCertificate),
                         new AcceptLimiterTlsReleaseHandler(acceptLimiter),
                         MqttEncoder.Instance,
                         new MqttDecoder(true, maxInboundMessageSize),
+                        new MqttLoggingHandler(),
                         new MqttAdapter(
                             this.settings,
                             this.sessionStateManager,
                             this.authProvider,
                             this.qos2StateProvider,
                             bridgeFactory));
+                    }
+                    else
+                    {
+                        channel.Pipeline.AddLast(
+                            new AcceptLimiterTlsReleaseHandler(acceptLimiter),
+                            MqttEncoder.Instance,
+                            new MqttDecoder(true, maxInboundMessageSize),
+                            new MqttLoggingHandler(),
+                            new MqttAdapter(
+                                this.settings,
+                                this.sessionStateManager,
+                                this.authProvider,
+                                this.qos2StateProvider,
+                                bridgeFactory));
+                    }
                 }));
         }
 

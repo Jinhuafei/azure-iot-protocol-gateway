@@ -33,34 +33,18 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.IotHubClient
 
         sealed class TelemetryTemplateParser
         {
-#if NETSTANDARD1_3
             readonly IList<UriPathTemplate> topicTemplateTable;
-#else
-            readonly UriTemplateTable topicTemplateTable;
-#endif
 
             public TelemetryTemplateParser(IEnumerable<string> inboundTemplates)
             {
-#if NETSTANDARD1_3
                 this.topicTemplateTable = (from template in inboundTemplates select new UriPathTemplate(template)).ToList();
-#else
-                this.topicTemplateTable = new UriTemplateTable(
-                    BaseUri,
-                    from template in inboundTemplates select new KeyValuePair<UriTemplate, object>(new UriTemplate(template, false), null));
-                this.topicTemplateTable.MakeReadOnly(true);
-#endif
             }
 
             public bool TryProcessMessage(IMessage message)
             {
-#if NETSTANDARD1_3
-            return TryParseAddressIntoMessagePropertiesWithRegex(message.Address, message);
-#else
-                return TryParseAddressIntoMessagePropertiesDefault(message.Address, message);
-#endif
+                return TryParseAddressIntoMessagePropertiesWithRegex(message.Address, message);
             }
 
-#if NETSTANDARD1_3
             bool TryParseAddressIntoMessagePropertiesWithRegex(string address, IMessage message)
             {
                 bool matched = false;
@@ -92,34 +76,6 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.IotHubClient
                 }
                 return matched;
             }
-#else
-            bool TryParseAddressIntoMessagePropertiesDefault(string address, IMessage message)
-            {
-                Collection<UriTemplateMatch> matches = this.topicTemplateTable.Match(new Uri(BaseUri, address));
-
-                if (matches.Count == 0)
-                {
-                    return false;
-                }
-
-                if (matches.Count > 1)
-                {
-                    if (CommonEventSource.Log.IsVerboseEnabled)
-                    {
-                        CommonEventSource.Log.Verbose("Topic name matches more than one route: " + address);
-                    }
-                }
-
-                UriTemplateMatch match = matches[0];
-                int variableCount = match.BoundVariables.Count;
-                for (int i = 0; i < variableCount; i++)
-                {
-                    // todo: this will unconditionally set property values - is it acceptable to overwrite existing value?
-                    message.Properties.Add(match.BoundVariables.GetKey(i), match.BoundVariables.Get(i));
-                }
-                return true;
-            }
-#endif
         }
 
         sealed class CommandTopicFormatter

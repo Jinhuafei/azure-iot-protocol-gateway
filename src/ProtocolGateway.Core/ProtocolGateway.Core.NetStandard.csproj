@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Microsoft.Azure.Devices.ProtocolGateway.Core</PackageId>
     <Title>Microsoft Azure IoT protocol gateway framework - Core</Title>
     <Description>This library contains the core components of Azure IoT protocol gateway that enables protocol translation for Azure IoT Hub.</Description>
@@ -44,6 +44,8 @@
   <ItemGroup>
     <PackageReference Include="DotNetty.Codecs.Mqtt" Version="0.6.0" />
     <PackageReference Include="DotNetty.Handlers" version="0.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net451'">

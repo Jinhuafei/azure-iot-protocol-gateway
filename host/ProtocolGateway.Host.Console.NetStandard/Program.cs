@@ -36,6 +36,7 @@ namespace ProtocolGateway.Host.Console.NetStandard
                 var cts = new CancellationTokenSource();
 
                 var certificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "protocol-gateway.contoso.com.pfx"), "password");
+                //X509Certificate2 certificate = null;
                 var settingsProvider = new AppConfigSettingsProvider();
                 ISessionStatePersistenceProvider sessionStateProvider = new TransientSessionStatePersistenceProvider();
 

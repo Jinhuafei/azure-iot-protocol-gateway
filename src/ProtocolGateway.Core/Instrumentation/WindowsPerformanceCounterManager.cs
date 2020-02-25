@@ -12,57 +12,57 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Instrumentation
     {
         readonly Dictionary<Tuple<string, string>, SafePerformanceCounter> counterMap;
 
-        protected WindowsPerformanceCounterManager(IDictionary<PerformanceCounterCategoryInfo, CounterCreationData[]> counterDefinitions)
-        {
-            this.counterMap = new Dictionary<Tuple<string, string>, SafePerformanceCounter>();
+        //protected WindowsPerformanceCounterManager(IDictionary<PerformanceCounterCategoryInfo, CounterCreationData[]> counterDefinitions)
+        //{
+        //    this.counterMap = new Dictionary<Tuple<string, string>, SafePerformanceCounter>();
 
-            foreach (KeyValuePair<PerformanceCounterCategoryInfo, CounterCreationData[]> counterCategoryInfo in counterDefinitions)
-            {
-                PerformanceCounterCategory category = GetOrCreateCounterCategory(counterCategoryInfo.Key, counterCategoryInfo.Value);
+        //    foreach (KeyValuePair<PerformanceCounterCategoryInfo, CounterCreationData[]> counterCategoryInfo in counterDefinitions)
+        //    {
+        //        PerformanceCounterCategory category = GetOrCreateCounterCategory(counterCategoryInfo.Key, counterCategoryInfo.Value);
 
-                PerformanceCounter[] counters = category.GetCounters();
-                foreach (PerformanceCounter counter in counters)
-                {
-                    counter.ReadOnly = false;
-                    this.counterMap.Add(Tuple.Create(category.CategoryName, counter.CounterName), new SafePerformanceCounter(counter));
-                }
-            }
-        }
+        //        PerformanceCounter[] counters = category.GetCounters();
+        //        foreach (PerformanceCounter counter in counters)
+        //        {
+        //            counter.ReadOnly = false;
+        //            this.counterMap.Add(Tuple.Create(category.CategoryName, counter.CounterName), new SafePerformanceCounter(counter));
+        //        }
+        //    }
+        //}
 
-        static PerformanceCounterCategory GetOrCreateCounterCategory(PerformanceCounterCategoryInfo categoryInfo, CounterCreationData[] counters)
-        {
-            bool creationPending = true;
-            bool categoryExists = false;
-            string categoryName = categoryInfo.CategoryName;
-            var counterNames = new HashSet<string>(counters.Select(info => info.CounterName));
-            PerformanceCounterCategory category = null;
-            if (PerformanceCounterCategory.Exists(categoryName))
-            {
-                categoryExists = true;
-                category = new PerformanceCounterCategory(categoryName);
-                PerformanceCounter[] counterList = category.GetCounters();
-                if (category.CategoryType == categoryInfo.CategoryType && counterList.Length == counterNames.Count)
-                {
-                    creationPending = counterList.Any(x => !counterNames.Contains(x.CounterName));
-                }
-            }
+        //static PerformanceCounterCategory GetOrCreateCounterCategory(PerformanceCounterCategoryInfo categoryInfo, CounterCreationData[] counters)
+        //{
+        //    bool creationPending = true;
+        //    bool categoryExists = false;
+        //    string categoryName = categoryInfo.CategoryName;
+        //    var counterNames = new HashSet<string>(counters.Select(info => info.CounterName));
+        //    PerformanceCounterCategory category = null;
+        //    if (PerformanceCounterCategory.Exists(categoryName))
+        //    {
+        //        categoryExists = true;
+        //        category = new PerformanceCounterCategory(categoryName);
+        //        PerformanceCounter[] counterList = category.GetCounters();
+        //        if (category.CategoryType == categoryInfo.CategoryType && counterList.Length == counterNames.Count)
+        //        {
+        //            creationPending = counterList.Any(x => !counterNames.Contains(x.CounterName));
+        //        }
+        //    }
 
-            if (creationPending)
-            {
-                if (categoryExists)
-                {
-                    PerformanceCounterCategory.Delete(categoryName);
-                }
-                var counterCollection = new CounterCreationDataCollection(counters);
+        //    if (creationPending)
+        //    {
+        //        if (categoryExists)
+        //        {
+        //            PerformanceCounterCategory.Delete(categoryName);
+        //        }
+        //        var counterCollection = new CounterCreationDataCollection(counters);
 
-                category = PerformanceCounterCategory.Create(
-                    categoryInfo.CategoryName,
-                    categoryInfo.CategoryHelp,
-                    categoryInfo.CategoryType,
-                    counterCollection);
-            }
-            return category;
-        }
+        //        category = PerformanceCounterCategory.Create(
+        //            categoryInfo.CategoryName,
+        //            categoryInfo.CategoryHelp,
+        //            categoryInfo.CategoryType,
+        //            counterCollection);
+        //    }
+        //    return category;
+        //}
 
         public IPerformanceCounter GetCounter(string category, string name)
         {

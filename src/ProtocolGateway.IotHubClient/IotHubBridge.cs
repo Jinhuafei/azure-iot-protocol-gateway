@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.IotHubClient
 
             try
             {
-                await client.OpenAsync(cancellationToken);
+                await client.OpenAsync();
                 cancellationToken.ThrowIfCancellationRequested(); // in case SDK does not always honor cancellation token in async operations
             }
             catch (IotHubException ex)

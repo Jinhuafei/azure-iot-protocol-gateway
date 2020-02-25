@@ -68,49 +68,7 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Instrumentation
 
         private static IPerformanceCounterManager GetPerformanceCounterManager()
         {
-#if NETSTANDARD1_3
             return new EmptyPerformanceCounterManager();
-#else
-            return new Manager();
-#endif
-
         }
-
-#if !NETSTANDARD1_3
-        class Manager : WindowsPerformanceCounterManager
-        {
-            public Manager() : base(new Dictionary<PerformanceCounterCategoryInfo, CounterCreationData[]>
-                {
-                    {
-                        new PerformanceCounterCategoryInfo(CategoryName, PerformanceCounterCategoryType.SingleInstance, CategoryHelp),
-                        new[]
-                        {
-                            new CounterCreationData(ConnectionsEstablishedTotalCounterName, "", PerformanceCounterType.NumberOfItems64),
-                            new CounterCreationData(ConnectionsCurrentCounterName, "", PerformanceCounterType.NumberOfItems64),
-                            new CounterCreationData(ConnectionsEstablishedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(ConnectionFailedAuthPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(ConnectionFailedOperationalPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(PacketsReceivedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(PacketsSentPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(PublishPacketsReceivedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond32),
-                            new CounterCreationData(PublishPacketsSentPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond32),
-                            new CounterCreationData(MessagesReceivedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond32),
-                            new CounterCreationData(MessagesRejectedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond32),
-                            new CounterCreationData(MessagesSentPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond32),
-                            new CounterCreationData(OutboundMessageProcessingTimeCounterName, "", PerformanceCounterType.AverageCount64),
-                            new CounterCreationData(OutboundMessageProcessingTimeBaseCounterName, "", PerformanceCounterType.AverageBase),
-                            new CounterCreationData(InboundMessageProcessingTimeCounterName, "", PerformanceCounterType.AverageCount64),
-                            new CounterCreationData(InboundMessageProcessingTimeBaseCounterName, "", PerformanceCounterType.AverageBase),
-                            new CounterCreationData(TotalMethodsInvokedCounterName, "", PerformanceCounterType.NumberOfItems64),
-                            new CounterCreationData(MethodsInvokedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                            new CounterCreationData(TotalCommandsReceivedCounterName, "", PerformanceCounterType.NumberOfItems64),
-                            new CounterCreationData(CommandsReceivedPerSecondCounterName, "", PerformanceCounterType.RateOfCountsPerSecond64),
-                        }
-                    }
-                })
-            {
-            }
-        }
-#endif
     }
 }

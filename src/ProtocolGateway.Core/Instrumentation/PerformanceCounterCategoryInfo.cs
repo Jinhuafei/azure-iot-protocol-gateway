@@ -7,16 +7,17 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Instrumentation
 
     public sealed class PerformanceCounterCategoryInfo
     {
-        public PerformanceCounterCategoryInfo(string categoryName, PerformanceCounterCategoryType categoryType, string categoryHelp)
+        //public PerformanceCounterCategoryInfo(string categoryName, PerformanceCounterCategoryType categoryType, string categoryHelp)
+        public PerformanceCounterCategoryInfo(string categoryName, string categoryHelp)
         {
             this.CategoryName = categoryName;
-            this.CategoryType = categoryType;
+            //this.CategoryType = categoryType;
             this.CategoryHelp = categoryHelp;
         }
 
         public string CategoryName { get; private set; }
 
-        public PerformanceCounterCategoryType CategoryType { get; private set; }
+        //public PerformanceCounterCategoryType CategoryType { get; private set; }
 
         public string CategoryHelp { get; private set; }
     }

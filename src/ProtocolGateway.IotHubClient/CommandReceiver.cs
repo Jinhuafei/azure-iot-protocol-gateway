@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.IotHubClient
             {
                 while (true)
                 {
-                    message = await this.bridge.DeviceClient.ReceiveAsync(this.lifetimeCancellation.Token);
+                    message = await this.bridge.DeviceClient.ReceiveAsync();
                     if (message == null)
                     {
                         this.messagingChannel.Close(null);
